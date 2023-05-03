@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VersiculoController;
 use App\Http\Controllers\LivroController;
 use App\Http\Controllers\TestamentoController;
@@ -44,13 +45,23 @@ Route::get('/teste', function () {
 //Route::apiResource('testamento', TestamentoController::class);
 //Route::apiResource('versiculo', VersiculoController::class);
 
-/* Resumindo mais ainda, agora todos os "apiResources" viram uma
+/* Protegendo todas as rotas(resources): livro, testamento, versiculo,
+   através deste grupo de rotas */
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    /* Resumindo mais ainda, agora todos os "apiResources" viram uma
    rota só, usando "apiResources" do laravel.*/
-Route::apiResources([
-    'livro' => LivroController::class,
-    'testamento' => TestamentoController::class,
-    'versiculo' => VersiculoController::class,
-]);
+    Route::apiResources([
+        'livro' => LivroController::class,
+        'testamento' => TestamentoController::class,
+        'versiculo' => VersiculoController::class,
+    ]);
+    /* Rota de logout */
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
