@@ -46,6 +46,8 @@ class VersiculoController extends Controller
         /* Assim não pode ser "findOrFail". */
         $versiculo = Versiculo::find($versiculo);
         if ($versiculo) {
+            /* Um versiculo pertence a um só livro */
+            $versiculo->livro; //Relacionamento a ser trazido nas respostas
             return $versiculo;
         }
 

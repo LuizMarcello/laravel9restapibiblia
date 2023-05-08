@@ -53,19 +53,18 @@ class AuthController extends Controller
             return response([
                 'message' => 'Email ou senha inválidos!'
             ], 401);
-
-            /* Finalmente, se o usuário e a senha conferirem */
-            /* Emitindo o token para acessar API */
-            /* Um nome fixo para o token */
-            $token = $user->createToken('UsuarioLogado')->plainTextToken;
-            $response = [
-                'user' => $user,
-                'token' => $token
-            ];
-
-            /* Retornando o usuário e o token, para utenticar com o mesmo */
-            return response($response, 201);
         }
+        /* Finalmente, se o usuário e a senha conferirem */
+        /* Emitindo o token para acessar API */
+        /* Um nome fixo para o token */
+        $token = $user->createToken('UsuarioLogado')->plainTextToken;
+        $response = [
+            'user' => $user,
+            'token' => $token
+        ];
+
+        /* Retornando o usuário e o token, para utenticar com o mesmo */
+        return response($response, 201);
     }
 
     public function logout(Request $request)

@@ -16,4 +16,15 @@ class Testamento extends Model
 
     /* Para não mais inserir as datas de criação e de atualização */
     /* public $timeStamps = false; */
+
+    /**
+     * Relacionamentos
+     * Pegar todos os livros vinculados.
+     * testamento com livros.
+     * hasMany(): (n,1) Um testamento pode ter "n" livros;
+     */
+    public function livros()
+    {
+        return $this->hasMany(Livro::class);
+    }
 }

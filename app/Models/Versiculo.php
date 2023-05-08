@@ -16,4 +16,17 @@ class Versiculo extends Model
 
     /* Para não mais inserir as datas de criação e de atualização */
     /* public $timeStamps = false; */
+
+
+    /**
+     * Pega o livro
+     * Versiculos com livros
+     * belongsTo(): (1,n) O versiculo pode pertencer somente a um livro.
+     *
+     * @return void
+     */
+    public function livro()
+    {
+        return $this->belongsTo(Livro::class);
+    }
 }

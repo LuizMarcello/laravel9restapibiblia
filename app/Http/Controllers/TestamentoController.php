@@ -46,6 +46,9 @@ class TestamentoController extends Controller
         /* Assim não pode ser "findOrFail". */
         $testamento = Testamento::find($testamento);
         if ($testamento) {
+            /* Um testamento pode ter vários livros */
+            $testamento->livros; //Relacionamento a ser trazido nas respostas
+
             return $testamento;
         }
 

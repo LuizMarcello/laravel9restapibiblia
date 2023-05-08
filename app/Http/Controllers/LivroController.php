@@ -48,6 +48,11 @@ class LivroController extends Controller
         /* Assim não pode ser "findOrFail". */
         $livro = Livro::find($livro);
         if ($livro) {
+            /* Um livro pertence a um só testamento */
+            $livro->testamento; //Relacionamento a ser trazido nas respostas
+            /* Um livro pode ter vários versiculos */
+            $livro->versiculos; //Relacionamento a ser trazido nas respostas
+
             return $livro;
         }
 
