@@ -52,6 +52,8 @@ class LivroController extends Controller
             $livro->testamento; //Relacionamento a ser trazido nas respostas
             /* Um livro pode ter vários versiculos */
             $livro->versiculos; //Relacionamento a ser trazido nas respostas
+            /* Um livro pertence a uma só versão */
+            $livro->versao; //Relacionamento a ser trazido nas respostas
 
             return $livro;
         }

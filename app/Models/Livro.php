@@ -12,7 +12,7 @@ class Livro extends Model
     /* Declarando qual vai ser a tabela deste modelo */
     /* protected $table = 'livros'; */
 
-    protected $fillable = ['nome', 'posicao', 'abreviacao', 'testamento_id',];
+    protected $fillable = ['nome', 'posicao', 'abreviacao', 'testamento_id', 'versao_id'];
 
     /* Para não mais inserir as datas de criação e de atualização */
     /* public $timeStamps = false; */
@@ -38,5 +38,15 @@ class Livro extends Model
     public function versiculos()
     {
         return $this->hasMany(Versiculo::class);
+    }
+
+    /**
+     * "belongsTo": Um livro pertence a uma versão
+     * Pegando a versão
+     * @return void
+     */
+    public function versao()
+    {
+        return $this->belongsTo(Versao::class);
     }
 }
