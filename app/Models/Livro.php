@@ -12,7 +12,7 @@ class Livro extends Model
     /* Declarando qual vai ser a tabela deste modelo */
     /* protected $table = 'livros'; */
 
-    protected $fillable = ['nome', 'posicao', 'abreviacao', 'testamento_id', 'versao_id'];
+    protected $fillable = ['nome', 'posicao', 'abreviacao', 'testamento_id', 'versao_id', 'capa'];
 
     /* Para não mais inserir as datas de criação e de atualização */
     /* public $timeStamps = false; */

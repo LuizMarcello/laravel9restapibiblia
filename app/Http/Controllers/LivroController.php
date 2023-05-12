@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Livro;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LivroController extends Controller
 {
@@ -47,6 +48,7 @@ class LivroController extends Controller
     {
         /* Assim não pode ser "findOrFail". */
         $livro = Livro::find($livro);
+        dd(Storage::disk('public')->url($livro->capa));
         if ($livro) {
             /* Um livro pertence a um só testamento */
             $livro->testamento; //Relacionamento a ser trazido nas respostas
@@ -72,14 +74,25 @@ class LivroController extends Controller
      */
     public function update(Request $request, $livro)
     {
+        /* capturando o hash gerado */
+        //dd($request->capa->hashName());
+        /* Capturando o nome original do arquivo */
+        //dd($request->capa->getClientOriginalName());
+
+        /* Salvando o arquivo no disco, conforme config/filesystems.php */
+        $path = $request->capa->store('capa_livro', 'public');
+
         $livro = Livro::find($livro);
         if ($livro) {
-            $livro->update($request->all());
-            return $livro;
+            /* $livro->update($request->all()); */
+            $livro->capa = $path;
+            if ($livro->save()) {
+                return $livro;
+            }
+            return response()->json([
+                'message' => 'Erro ao atualizar o livro.'
+            ], 404);
         }
-        return response()->json([
-            'message' => 'Erro ao atualizar o livro.'
-        ], 404);
     }
 
     /**
