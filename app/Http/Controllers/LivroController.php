@@ -4,6 +4,8 @@ use App\Models\Livro;
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\LivroResource;
+use App\Http\Resources\LivrosCollection;
 use App\Models\Livro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +19,7 @@ class LivroController extends Controller
      */
     public function index()
     {
-        return Livro::all();
+        return new LivrosCollection(Livro::all());
     }
 
     /**
@@ -26,7 +28,7 @@ class LivroController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+      public function store(Request $request)
     {
         if (Livro::create($request->all())) {
             return response()->json([
@@ -47,17 +49,14 @@ class LivroController extends Controller
     public function show($livro)
     {
         /* Assim não pode ser "findOrFail". */
-        $livro = Livro::find($livro);
-        dd(Storage::disk('public')->url($livro->capa));
+        /* Um livro pertence a um só testamento */
+        /* Um livro pode ter vários versiculos */
+        /* Um livro pertence a uma só versão */
+        /* Relacionamentos a serem trazidos nas respostas */
+        $livro = Livro::with('testamento','versiculos','versao')->find($livro);
+        //dd(Storage::disk('public')->url($livro->capa));
         if ($livro) {
-            /* Um livro pertence a um só testamento */
-            $livro->testamento; //Relacionamento a ser trazido nas respostas
-            /* Um livro pode ter vários versiculos */
-            $livro->versiculos; //Relacionamento a ser trazido nas respostas
-            /* Um livro pertence a uma só versão */
-            $livro->versao; //Relacionamento a ser trazido nas respostas
-
-            return $livro;
+            return new LivroResource($livro);
         }
 
         return response()->json([

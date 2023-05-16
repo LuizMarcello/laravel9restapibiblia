@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Versao;
 use Illuminate\Http\Request;
+use App\Http\Resources\VersaoResource;
+use App\Http\Resources\VersoesCollection;
 
 class VersaoController extends Controller
 {
@@ -15,7 +17,10 @@ class VersaoController extends Controller
     public function index()
     {
         /* get: Obtem tudo */
-        return Versao::all();
+        //return Versao::all();
+        return new VersoesCollection(Versao::select('id', 'nome', 'abreviacao')
+            //->get());
+            ->paginate(5));
     }
 
     /**
@@ -47,13 +52,11 @@ class VersaoController extends Controller
     public function show($versao)
     {
         /* get: "Quem" vai ser mostrado("id") */
-        $versao = Versao::find($versao);
+        /* Uma versão pode ter só um idioma */
+        /* Uma versão pode ter vários livros */
+        $versao = Versao::with('idioma', 'livros')->find($versao);
         if ($versao) {
-            /* Uma versão pode ter só um idioma */
-            $versao->idioma;
-            /* Uma versão pode ter vários livros */
-            $versao->livros;
-            return $versao;
+            return new VersaoResource($versao);
         }
 
         return response()->json([
@@ -70,7 +73,8 @@ class VersaoController extends Controller
      */
     public function update(Request $request, $versao)
     {
-        /* put: Formulário("O quê" vai ser atualizado), e "Quem"("id") vai ser atualizado */
+        /* put: Formulário("O quê" vai ser atualizado), e "Quem"("id")
+           vai ser atualizado */
         $versao = Versao::findOrFail($versao);
         if ($versao) {
             $versao->update($request->all());
@@ -78,9 +82,9 @@ class VersaoController extends Controller
             return $versao;
         }
 
-        return response()->json([
+          return response()->json([
             'message' => 'Erro ao atualizar a versão.'
-        ], 404);
+           ], 404);
     }
 
     /**

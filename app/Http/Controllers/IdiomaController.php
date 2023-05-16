@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\IdiomaResource;
 use App\Models\Idioma;
 use Illuminate\Http\Request;
 
@@ -47,11 +48,12 @@ class IdiomaController extends Controller
     public function show($idioma)
     {
         /* get: "Quem" vai ser mostrado("id") */
-        $idioma = Idioma::findOrFail($idioma);
+        $idioma = Idioma::with('versoes')->find($idioma);
         if ($idioma) {
             /* Um idioma pode ter várias versões] */
-            $idioma->versoes;
-            return $idioma;
+            //$idioma->versoes;
+            //return $idioma;
+            return new IdiomaResource($idioma);
         }
 
         return response()->json([
@@ -68,15 +70,17 @@ class IdiomaController extends Controller
      */
     public function update(Request $request, $idioma)
     {
-        /* put: Formulário("O quê" vai ser atualizado), e "Quem"("id") vai ser atualizado */
-        $idioma = Idioma::findOrFail($idioma);
-        if ($idioma) {
+        /* put: Formulário("O quê" vai ser atualizado), e
+           "Quem"("id") vai ser atualizado */
+           $idioma = Idioma::findOrFail($idioma);
+           
+          if ($idioma) {
             $idioma->update($request->all());
 
             return $idioma;
         }
 
-        return response()->json([
+             return response()->json([
             'message' => 'Erro ao atualizar o idioma'
         ], 404);
     }
