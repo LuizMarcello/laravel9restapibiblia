@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\VersiculoResource;
+use App\Http\Resources\VersiculosCollection;
 use App\Models\Versiculo;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,7 @@ class VersiculoController extends Controller
      */
     public function index()
     {
-        return Versiculo::all();
+        return new VersiculosCollection(Versiculo::all());
     }
 
     /**
@@ -44,11 +46,12 @@ class VersiculoController extends Controller
     public function show($versiculo)
     {
         /* Assim não pode ser "findOrFail". */
-        $versiculo = Versiculo::find($versiculo);
+        /* Um versiculo pertence a um só livro */
+        /* Relacionamento a ser trazido nas respostas */
+        $versiculo = Versiculo::with('livro')->find($versiculo);
         if ($versiculo) {
             /* Um versiculo pertence a um só livro */
-            $versiculo->livro; //Relacionamento a ser trazido nas respostas
-            return $versiculo;
+            return new VersiculoResource($versiculo);
         }
 
         return response()->json([

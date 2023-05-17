@@ -20,9 +20,9 @@ class LivroResource extends JsonResource
             'nome' => $this->nome,
             'abreviacao' => $this->abreviacao,
             /* Um livro só tem um testamento */
-            'testamento' => $this->whenLoaded('testamento'),
+            'testamento' => new TestamentoResource($this->whenLoaded('testamento')) ,
             /* Um livro pode ter vários versiculos */
-            'versiculos' => $this->whenLoaded('versiculos'),
+            'versiculos' => new VersiculosCollection($this->whenLoaded('versiculos')),
             /* Um livro só tem uma versão */
             'versao' => new VersaoResource($this->whenLoaded('versao'))
         ];
