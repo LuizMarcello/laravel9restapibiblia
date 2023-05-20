@@ -19,7 +19,22 @@ class VersiculoResource extends JsonResource
             'capitulo' => $this->capitulo,
             'versiculo' => $this->versiculo,
             'texto' => $this->texto,
-            'livro' => new LivroResource($this->whenLoaded('livro'))
+            'livro' => new LivroResource($this->whenLoaded('livro')),
+'links' => [
+[
+'rel' => 'Alterar um versiculo',
+'type' => 'PUT',
+/* apiresource pego das rotas de "api.php" */
+'link' => route('versiculo.update', $this->id)
+],
+
+[
+'rel' => 'Excluir um versiculo',
+'type' => 'DELETE',
+/* apiresource pego das rotas de "api.php" */
+'link' => route('versiculo.destroy', $this->id)
+],
+]
         ];
     }
 }

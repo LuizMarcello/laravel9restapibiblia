@@ -33,7 +33,23 @@ class VersaoResource extends JsonResource
             /* "IdiomaResource": Uma versão pode ter só um idioma */
             /* "LivrosCollection": Uma versão pode ter vários livros */
             'idioma' => new IdiomaResource($this->whenLoaded('idioma')),
-            'livros' => new LivrosCollection($this->whenLoaded('Livros'))
+            'livros' => new LivrosCollection($this->whenLoaded('Livros')),
+            'links' => [
+            [
+            'rel' => 'Alterar uma versão',
+            'type' => 'PUT',
+            /* apiresource pego das rotas de "api.php" */
+            'link' => route('versao.update', $this->id)
+            ],
+
+            [
+            'rel' => 'Excluir uma versão',
+            'type' => 'DELETE',
+            /* apiresource pego das rotas de "api.php" */
+            'link' => route('versao.destroy', $this->id)
+            ],
+            ]
+
         ];
     }
 }

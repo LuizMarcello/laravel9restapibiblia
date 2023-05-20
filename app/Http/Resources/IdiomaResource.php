@@ -31,7 +31,22 @@ class IdiomaResource extends JsonResource
             'nome' => $this->nome,
             /* Uma versão só tem um idioma */
             /* "VersoesCollection": Um idioma pode ter várias versões */
-            'versoes' => new VersoesCollection($this->whenLoaded('versoes'))
+            'versoes' => new VersoesCollection($this->whenLoaded('versoes')),
+            'links' => [
+                [
+                     'rel' => 'Alterar um idioma',
+                    'type' => 'PUT',
+                    /* apiresource pego das rotas de "api.php" */
+                    'link' => route('idioma.update', $this->id)
+                ],
+
+                [
+                'rel' => 'Excluir um idioma',
+                'type' => 'DELETE',
+                /* apiresource pego das rotas de "api.php" */
+                'link' => route('idioma.destroy', $this->id)
+                ],
+            ]
         ];
     }
 }
